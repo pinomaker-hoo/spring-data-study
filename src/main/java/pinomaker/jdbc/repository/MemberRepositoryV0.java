@@ -5,6 +5,7 @@ import pinomaker.jdbc.connection.DBConnectionUtil;
 import pinomaker.jdbc.domain.Member;
 
 import java.sql.*;
+import java.util.NoSuchElementException;
 
 @Slf4j
 public class MemberRepositoryV0 {
@@ -27,6 +28,35 @@ public class MemberRepositoryV0 {
             close(con, pstmt, null);
         }
     }
+
+    public Member findById(String memberId) throws SQLException {
+        String sql = "select * from member where member_id = ?";
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try{
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            rs = pstmt.executeQuery();
+            if(rs.next()){
+                Member member = new Member();
+                member.setMmeberId(rs.getString("member_id"));
+                member.setMoney(rs.getInt("money"));
+                return member;
+            } else {
+                throw new NoSuchElementException("member not found memberIid = " + memberId);
+            }
+        }catch (SQLException e){
+            log.error("DB ERROR", e);
+            throw e;
+        }finally {
+            close(con, pstmt, rs);
+        }
+    }
+
 
     public void close(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {
