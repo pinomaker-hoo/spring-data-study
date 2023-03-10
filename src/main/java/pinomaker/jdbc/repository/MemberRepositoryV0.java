@@ -21,10 +21,10 @@ public class MemberRepositoryV0 {
             pstmt.setInt(2, member.getMoney());
             pstmt.execute();
             return member;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("DB ERROR : ", e);
             throw e;
-        }finally {
+        } finally {
             close(con, pstmt, null);
         }
     }
@@ -36,12 +36,12 @@ public class MemberRepositoryV0 {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
-        try{
+        try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setString(1, memberId);
             rs = pstmt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 Member member = new Member();
                 member.setMmeberId(rs.getString("member_id"));
                 member.setMoney(rs.getInt("money"));
@@ -49,10 +49,10 @@ public class MemberRepositoryV0 {
             } else {
                 throw new NoSuchElementException("member not found memberIid = " + memberId);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("DB ERROR", e);
             throw e;
-        }finally {
+        } finally {
             close(con, pstmt, rs);
         }
     }
@@ -62,21 +62,38 @@ public class MemberRepositoryV0 {
         Connection con = null;
         PreparedStatement pstmt = null;
 
-        try{
+        try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
             pstmt.setInt(1, money);
             pstmt.setString(2, memberId);
             int resultSize = pstmt.executeUpdate();
             log.info("resultSize={}", resultSize);
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("DB ERROR", e);
             throw e;
-        }finally {
+        } finally {
             close(con, pstmt, null);
         }
     }
 
+    public void delete(String memberId) throws SQLException {
+        String sql = "delete from member where member_id = ?";
+        Connection con = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            con = getConnection();
+            pstmt = con.prepareStatement(sql);
+            pstmt.setString(1, memberId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            log.error("DB ERROR", e);
+            throw e;
+        } finally {
+            close(con, pstmt, null);
+        }
+    }
 
     public void close(Connection con, Statement stmt, ResultSet rs) {
         if (rs != null) {
@@ -87,23 +104,23 @@ public class MemberRepositoryV0 {
             }
         }
         if (stmt != null) {
-            try{
+            try {
                 stmt.close();
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 log.info("ERROr : ", e);
             }
         }
 
         if (con != null) {
-            try{
+            try {
                 con.close();
-            }catch (SQLException e){
+            } catch (SQLException e) {
                 log.info("ERROr : ", e);
             }
         }
     }
 
-    private Connection getConnection(){
+    private Connection getConnection() {
         return DBConnectionUtil.getConnection();
     }
 }
