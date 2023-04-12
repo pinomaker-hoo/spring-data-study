@@ -26,7 +26,7 @@ public class MemberRepositoryV2 {
         try {
             con = getConnection();
             pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, member.getMmeberId());
+            pstmt.setString(1, member.getMemberId());
             pstmt.setInt(2, member.getMoney());
             pstmt.execute();
             return member;
@@ -52,7 +52,7 @@ public class MemberRepositoryV2 {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 Member member = new Member();
-                member.setMmeberId(rs.getString("member_id"));
+                member.setMemberId(rs.getString("member_id"));
                 member.setMoney(rs.getInt("money"));
                 return member;
             } else {
@@ -78,7 +78,7 @@ public class MemberRepositoryV2 {
             rs = pstmt.executeQuery();
             if (rs.next()) {
                 Member member = new Member();
-                member.setMmeberId(rs.getString("member_id"));
+                member.setMemberId(rs.getString("member_id"));
                 member.setMoney(rs.getInt("money"));
                 return member;
             } else {

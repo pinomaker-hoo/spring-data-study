@@ -47,11 +47,11 @@ public class MemberServiceV2Test {
         memberRepositoryV2.save(memberB);
 
         //when
-        memberServiceV2.accountTransfer(memberA.getMmeberId(), memberB.getMmeberId(), 2000);
+        memberServiceV2.accountTransfer(memberA.getMemberId(), memberB.getMemberId(), 2000);
 
         //then
-        Member findMemberA = memberRepositoryV2.findById(memberA.getMmeberId());
-        Member findMemberB = memberRepositoryV2.findById(memberB.getMmeberId());
+        Member findMemberA = memberRepositoryV2.findById(memberA.getMemberId());
+        Member findMemberB = memberRepositoryV2.findById(memberB.getMemberId());
         assertThat(findMemberA.getMoney()).isEqualTo(8000);
         assertThat(findMemberB.getMoney()).isEqualTo(12000);
     }
@@ -66,12 +66,12 @@ public class MemberServiceV2Test {
         memberRepositoryV2.save(memberEx);
 
         //when
-        assertThatThrownBy(() -> memberServiceV2.accountTransfer(memberA.getMmeberId(), memberEx.getMmeberId(), 2000))
+        assertThatThrownBy(() -> memberServiceV2.accountTransfer(memberA.getMemberId(), memberEx.getMemberId(), 2000))
                 .isInstanceOf(IllegalStateException.class);
 
         //then
-        Member findMemberA = memberRepositoryV2.findById(memberA.getMmeberId());
-        Member findMemberEx = memberRepositoryV2.findById(memberEx.getMmeberId());
+        Member findMemberA = memberRepositoryV2.findById(memberA.getMemberId());
+        Member findMemberEx = memberRepositoryV2.findById(memberEx.getMemberId());
         assertThat(findMemberA.getMoney()).isEqualTo(8000);
         assertThat(findMemberEx.getMoney()).isEqualTo(10000);
     }

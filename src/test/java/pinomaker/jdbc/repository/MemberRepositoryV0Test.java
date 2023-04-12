@@ -22,17 +22,17 @@ public class MemberRepositoryV0Test {
         repository.save(member);
 
         //findById
-        Member findMember = repository.findById(member.getMmeberId());
+        Member findMember = repository.findById(member.getMemberId());
         log.info("findMmber = {}", findMember);
         assertThat(findMember).isEqualTo(member);
 
         //update
-        repository.update(member.getMmeberId(), 20000);
-        Member updateMember = repository.findById(member.getMmeberId());
+        repository.update(member.getMemberId(), 20000);
+        Member updateMember = repository.findById(member.getMemberId());
         assertThat(updateMember.getMoney()).isEqualTo(20000);
 
         //delete
-        repository.delete(member.getMmeberId());
-        assertThatThrownBy(() -> repository.findById(member.getMmeberId())).isInstanceOf(NoSuchElementException.class);
+        repository.delete(member.getMemberId());
+        assertThatThrownBy(() -> repository.findById(member.getMemberId())).isInstanceOf(NoSuchElementException.class);
     }
 }
