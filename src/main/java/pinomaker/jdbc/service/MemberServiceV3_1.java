@@ -45,15 +45,4 @@ public class MemberServiceV3_1 {
             throw new IllegalStateException("이체 중 예외 발생");
         }
     }
-
-    private void release(Connection con) {
-        if (con != null) {
-            try {
-                con.setAutoCommit(true);
-                con.close();
-            } catch (Exception e) {
-                log.info("ERROR : ", e);
-            }
-        }
-    }
 }
